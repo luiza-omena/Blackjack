@@ -1,0 +1,15 @@
+{
+  "name": "blackjack-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "nodemon": "^3.1.10",
+    "uuid": "^9.0.1"
+  }
+}

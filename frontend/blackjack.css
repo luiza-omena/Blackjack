@@ -1,0 +1,430 @@
+:root {
+  --bg-color: #120220;
+  --accent: #d8385e;
+  --highlight: #36dba8;
+  --card-bg: #1f0633;
+  --text-color: #f0f0f0;
+  --border-color: #ffb347;
+  --input-bg: #2e0d45;
+  --input-border: #ffb347;
+  --modal-bg: rgba(31, 6, 51, 0.95);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Press Start 2P", cursive;
+  background: var(--bg-color);
+  color: var(--text-color);
+  text-align: center;
+  padding: 2rem;
+  cursor: default;
+}
+
+h1 {
+  color: var(--highlight);
+  text-shadow: 2px 2px #000;
+  margin-bottom: 1rem;
+}
+
+.input-large {
+  padding: 0.8rem;
+  margin: 0.5rem;
+  width: 180px;
+  background: var(--input-bg);
+  color: var(--text-color);
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  text-align: center;
+}
+
+button {
+  padding: 0.75rem 1.2rem;
+  margin: 0.5rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+button:hover {
+  background: var(--highlight);
+  transform: scale(1.05);
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.setup,
+.game {
+  background: var(--card-bg);
+  border: 4px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.rules {
+  background: var(--card-bg);
+  border: 4px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1rem;
+  max-width: 800px;
+  margin: 1rem auto;
+  font-size: 0.7rem;
+  text-align: left;
+}
+.rules h2 {
+  color: var(--highlight);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.rules ul {
+  list-style: none;
+}
+.rules li {
+  margin-bottom: 0.5rem;
+}
+.rules li::before {
+  content: "★ ";
+  color: var(--accent);
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 1rem auto;
+}
+
+.players,
+.hand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.hand {
+  background: #280541;
+  padding: 0.8rem;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+.hand h2 {
+  margin-bottom: 0.5rem;
+}
+
+.cards {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.card {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 5px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px var(--highlight);
+}
+
+.info,
+.timer {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.timer {
+  color: var(--highlight);
+  font-size: 1.1rem;
+}
+
+.controls {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.controls button {
+  width: 140px;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.scoreboard {
+  background: var(--card-bg);
+  border: 4px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1rem;
+  font-size: 0.8rem;
+  text-align: left;
+  display: none;
+  min-width: 200px;
+}
+.scoreboard.show {
+  display: block;
+  animation: fadeIn 0.5s;
+}
+.scoreboard div {
+  margin-bottom: 0.5rem;
+  padding: 0.3rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.player-list {
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+.player-list h3 {
+  margin-bottom: 0.5rem;
+  color: var(--highlight);
+}
+.player-list div {
+  padding: 0.3rem;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.5s;
+}
+.modal-content {
+  background: var(--modal-bg);
+  padding: 2rem;
+  border: 3px solid var(--highlight);
+  border-radius: 12px;
+  color: var(--text-color);
+  max-width: 90%;
+  width: 400px;
+  text-align: center;
+  animation: scaleIn 0.5s;
+}
+.modal-content h2 {
+  color: var(--highlight);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+.modal-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+#modal-btn {
+  background: var(--highlight);
+  color: #000;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+}
+
+#countdown {
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 5rem;
+  color: var(--highlight);
+  text-shadow: 4px 4px #000;
+  z-index: 1001;
+  animation: pulse 1s infinite;
+}
+
+.toast {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: var(--highlight);
+  color: #000;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 15px #000;
+  font-size: 0.9rem;
+  z-index: 1002;
+  animation: slideIn 0.3s;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+#copyGameIdBtn {
+  background: transparent;
+  border: none;
+  padding: 0.2rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.copy-icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.2s;
+}
+
+#copyGameIdBtn:hover .copy-icon {
+  transform: scale(1.1);
+  filter: brightness(2) invert(1);
+}
+
+.create-section,
+.join-section {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.input-large {
+  padding: 0.8rem;
+  margin: 0.5rem;
+  width: 300px;
+  background: var(--input-bg);
+  color: var(--text-color);
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.full-width {
+  width: 300px;
+}
+
+.separator {
+  margin: 1.5rem 0;
+  font-size: 0.8rem;
+  color: var(--text-color);
+  font-weight: bold;
+  text-align: center;
+  position: relative;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: var(--border-color);
+}
+
+.separator::before {
+  left: 0;
+}
+
+.separator::after {
+  right: 0;
+}
+
+.card-draw-animation {
+  animation: drawCard 0.5s ease-in-out;
+}
+
+@keyframes drawCard {
+  0% {
+    transform: translateY(-50px) rotate(-10deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+}
+
+.dealer-action {
+  background: var(--modal-bg);
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  color: var(--highlight);
+  font-weight: bold;
+  animation: fadeIn 0.3s ease-in-out;
+  transition: all 0.3s;
+  display: inline-block;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}

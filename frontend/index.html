@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackjack 21</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="blackjack.css" />
+  </head>
+  <body>
+    <h1>Blackjack 21</h1>
+
+    <div id="setup" class="setup">
+      <div id="formContainer">
+        <div class="create-section">
+          <input
+            id="playerName"
+            class="input-large"
+            type="text"
+            placeholder="Nome"
+          />
+          <input
+            id="maxPlayers"
+            class="input-large"
+            type="number"
+            min="2"
+            max="4"
+            placeholder="Jogadores (2-4)"
+          />
+          <input
+            id="rounds"
+            class="input-large"
+            type="number"
+            min="3"
+            placeholder="Rodadas (Min: 3)"
+          />
+          <input
+            id="timeout"
+            class="input-large"
+            type="number"
+            min="5"
+            placeholder="Tempo de Jogada"
+          />
+          <button id="createGameBtn" class="full-width">
+            Criar Jogo (Host)
+          </button>
+        </div>
+
+        <div class="separator">OU</div>
+
+        <div class="join-section">
+          <input
+            id="playerNameJoin"
+            class="input-large"
+            type="text"
+            placeholder="Nome"
+          />
+          <input
+            id="gameIdInput"
+            class="input-large"
+            type="text"
+            placeholder="ID da Sala"
+          />
+          <button id="joinGameBtn" class="full-width">Entrar na Sala</button>
+          <button id="joinRandomBtn" class="full-width">
+            Entrar em Sala Aleatória
+          </button>
+        </div>
+      </div>
+
+      <button id="startBtn" class="hidden">Começar Jogo</button>
+      <button id="leaveRoomBtn" class="hidden">Sair da Sala</button>
+
+      <div id="gameIdDisplay" class="hidden">
+        <span id="gameIdText"></span>
+        <button id="copyGameIdBtn" title="Copiar ID da Sala">
+          <img src="public/icons/copy.svg" alt="Copiar" class="copy-icon" />
+        </button>
+      </div>
+
+      <div id="playerList" class="player-list hidden"></div>
+      <div id="waitHost" class="hidden">Aguardando host iniciar...</div>
+    </div>
+
+    <div id="rules" class="rules">
+      <h2>Regras do Blackjack</h2>
+      <ul>
+        <li>2–10 = valor nominal; J/Q/K = 10; Ás = 1 ou 11.</li>
+        <li>Cada jogador e a banca recebem 2 cartas; banca mostra 1.</li>
+        <li>Hit para pedir carta, Stand para parar.</li>
+        <li>Banca compra até ≥17; chance de 50% de +1 carta se 17–20.</li>
+        <li>Perde se ultrapassar 21; empate mantém mão.</li>
+        <li>Blackjack (21 nas 2 primeiras) também empata.</li>
+      </ul>
+    </div>
+
+    <div id="countdown" class="hidden"></div>
+
+    <div class="container">
+      <div id="game" class="game hidden">
+        <div class="info" id="info"></div>
+        <div class="timer" id="timer"></div>
+        <div class="players" id="players"></div>
+        <div class="hand" id="dealer">
+          <div id="dealerAction" class="dealer-action hidden"></div>
+          <h2>Banca</h2>
+          <div class="cards"></div>
+          <div class="hand-value"></div>
+        </div>
+
+        <div class="controls">
+          <button id="hitBtn">Pedir Carta</button>
+          <button id="standBtn">Parar</button>
+        </div>
+      </div>
+      <div class="scoreboard" id="scoreboard"></div>
+    </div>
+
+    <div id="modal" class="modal hidden">
+      <div class="modal-content">
+        <p id="modal-message"></p>
+        <button id="modal-btn">Jogar Novamente</button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="blackjack.js"></script>
+  </body>
+</html>
