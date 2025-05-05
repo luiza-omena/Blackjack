@@ -101,14 +101,14 @@ function handValue(hand) {
   return total;
 }
 
-function updateScoreboard(ps, gameState, turn) {
+function updateScoreboard(gameState, dealerState) {
   const sb = document.getElementById("scoreboard");
   const dealerTurn = gameState.dealerPlaying;
 
   sb.innerHTML =
-    ps
+    gameState.players
       .map((p) => {
-        const isCurrent = !dealerTurn && p.name === turn;
+        const isCurrent = !dealerTurn && p.name === gameState.turn;
         return `<div${
           isCurrent ? ' style="color:var(--highlight); font-weight:bold;"' : ""
         }>
@@ -119,7 +119,7 @@ function updateScoreboard(ps, gameState, turn) {
     `<div${
       dealerTurn ? ' style="color:var(--highlight); font-weight:bold;"' : ""
     }>
-      Banca${dealerTurn ? " 🔹" : ""}: ${gameState.points} pts
+      Banca${dealerTurn ? " 🔹" : ""}: ${dealerState.points} pts
     </div>`;
 
   sb.classList.add("show");
@@ -152,7 +152,6 @@ function updateTimer(gameState) {
 }
 
 function showWinnerModal(winners) {
-  const modal = document.getElementById("modal");
   const message = document.getElementById("modal-message");
   const btn = document.getElementById("modal-btn");
 
@@ -220,7 +219,6 @@ async function optimizedFetchState() {
     const gameState = await res.json();
     dealerPlaying = gameState.dealerPlaying;
     lastUpdate = gameState.lastUpdate || Date.now();
-    const dealerActionEl = document.getElementById("dealerAction");
 
     if (!lastDealerPlaying && gameState.dealerPlaying) {
       showDealerMessage("🎬 A banca começou sua rodada!", 3000);
@@ -287,19 +285,19 @@ async function optimizedFetchState() {
         gameState.dealerPlaying,
         gameState.finished
       );
-      updateScoreboard(gameState.players, gameState.dealer, gameState.turn);
+      updateScoreboard(gameState, gameState.dealer);
       updateTimer(gameState);
     }
 
     if (!gameState.finished && gameState.turn !== lastTurn) {
-      if (gameState.turn === playerName) {
-        show("hitBtn");
-        show("standBtn");
-        showTurnModal("É a sua vez!");
-      } else if (gameState.dealerPlaying) {
+      if (gameState.dealerPlaying) {
         hide("hitBtn");
         hide("standBtn");
         showTurnModal("Agora é a vez da banca!");
+      } else if (gameState.turn === playerName) {
+        show("hitBtn");
+        show("standBtn");
+        showTurnModal("É a sua vez!");
       } else {
         hide("hitBtn");
         hide("standBtn");
