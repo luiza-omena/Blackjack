@@ -7,7 +7,8 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(compression());
 
 const games = {};
@@ -152,7 +153,7 @@ function advanceRound(game) {
 }
 
 app.post("/games", (req, res) => {
-  const { playerName, maxPlayers, rounds, timeout } = req.body;
+  const { playerName, maxPlayers, rounds, timeout, photo } = req.body;
   const gameId = uuidv4(),
     pid = uuidv4();
   games[gameId] = {
@@ -161,7 +162,16 @@ app.post("/games", (req, res) => {
     totalRounds: rounds,
     currentRound: 0,
     currentPlayerIndex: 0,
-    players: [{ id: pid, name: playerName, hand: [], points: 0, value: 0 }],
+    players: [
+      {
+        id: pid,
+        name: playerName,
+        hand: [],
+        points: 0,
+        value: 0,
+        photo: photo || null,
+      },
+    ],
     dealer: { hand: [], points: 0, value: 0, name: "Banca" },
     deck: [],
     started: false,
@@ -178,7 +188,7 @@ app.post("/games", (req, res) => {
 });
 
 app.post("/games/random/join", (req, res) => {
-  const { playerName } = req.body;
+  const { playerName, photo } = req.body;
   if (!playerName)
     return res.status(400).json({ error: "Nome é obrigatório." });
 
@@ -195,6 +205,7 @@ app.post("/games/random/join", (req, res) => {
   openGame.players.push({
     id: pid,
     name: playerName,
+    photo: photo || null,
     hand: [],
     points: 0,
     value: 0,
@@ -232,7 +243,7 @@ app.post("/games/:gameId/restart", (req, res) => {
 });
 
 app.post("/games/:id/join", (req, res) => {
-  const { playerName } = req.body;
+  const { playerName, photo } = req.body;
   const game = games[req.params.id];
   if (!game) return res.status(404).json({ error: "Sala não encontrada." });
   if (game.started || game.countdown)
@@ -246,6 +257,7 @@ app.post("/games/:id/join", (req, res) => {
   game.players.push({
     id: pid,
     name: playerName,
+    photo: photo || null,
     hand: [],
     points: 0,
     value: 0,
