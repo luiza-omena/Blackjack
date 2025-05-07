@@ -14,6 +14,8 @@ let dealerPlaying = false,
   gameFinished = false;
 let lastDealerPlaying = false;
 let lastDealerHandCount = 0;
+let playerPhotoData = null;
+let playerPhotoJoinData = null;
 
 function show(el) {
   document.getElementById(el).classList.remove("hidden");
@@ -58,7 +60,11 @@ function renderPlayers(ps, turn, isDealerPlaying) {
     const div = document.createElement("div");
     div.className = "hand";
     div.innerHTML = `
-      <h2>${p.name}${isCurrent ? " 🔹" : ""}</h2>
+      <h2>${
+        p.photo
+          ? `<img src="${p.photo}" class="profile-photo" alt="Foto de ${p.name}">`
+          : ""
+      }${isCurrent ? " 🔹" : ""}</h2>
       <div class="cards">${p.hand
         .map((c) => `<img src="${getCardImage(c)}" class="card">`)
         .join("")}</div>
@@ -344,8 +350,38 @@ async function safeFetch(url, options, timeout = 5000) {
   }
 }
 
+function toDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("playerPhoto").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  playerPhotoData = await toDataURL(file);
+  const img = document.getElementById("previewPhoto");
+  img.src = playerPhotoData;
+  img.classList.remove("hidden");
+});
+
+document
+  .getElementById("playerPhotoJoin")
+  .addEventListener("change", async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    playerPhotoJoinData = await toDataURL(file);
+    const img = document.getElementById("previewPhotoJoin");
+    img.src = playerPhotoJoinData;
+    img.classList.remove("hidden");
+  });
+
 document.getElementById("createGameBtn").onclick = async () => {
   playerName = document.getElementById("playerName").value.trim();
+  playerPhotoFile = document.getElementById("playerPhoto").files[0];
   const maxP = +document.getElementById("maxPlayers").value,
     rounds = +document.getElementById("rounds").value,
     to = +document.getElementById("timeout").value;
@@ -369,6 +405,7 @@ document.getElementById("createGameBtn").onclick = async () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         playerName,
+        photo: playerPhotoData,
         maxPlayers: maxP,
         rounds,
         timeout: to,
@@ -395,6 +432,7 @@ document.getElementById("createGameBtn").onclick = async () => {
 
 document.getElementById("joinRandomBtn").onclick = async () => {
   playerName = document.getElementById("playerNameJoin").value.trim();
+  playerPhotoJoinFile = document.getElementById("playerPhotoJoin").files[0];
   isHost = false;
 
   if (!playerName) {
@@ -405,7 +443,7 @@ document.getElementById("joinRandomBtn").onclick = async () => {
     const res = await fetch(`${API_URL}/games/random/join`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ playerName }),
+      body: JSON.stringify({ playerName, photo: playerPhotoJoinData }),
     });
     const data = await res.json();
     if (!res.ok || data.error) {
@@ -428,6 +466,7 @@ document.getElementById("joinRandomBtn").onclick = async () => {
 
 document.getElementById("joinGameBtn").onclick = async () => {
   playerName = document.getElementById("playerNameJoin").value.trim();
+  playerPhotoJoinFile = document.getElementById("playerPhotoJoin").files[0];
   isHost = false;
   const inputGameId = document.getElementById("gameIdInput").value.trim();
 
@@ -440,7 +479,7 @@ document.getElementById("joinGameBtn").onclick = async () => {
     const res = await fetch(`${API_URL}/games/${gameId}/join`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ playerName }),
+      body: JSON.stringify({ playerName, photo: playerPhotoJoinData }),
     });
 
     const data = await res.json();

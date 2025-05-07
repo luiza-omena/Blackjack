@@ -16,6 +16,18 @@
     <div id="setup" class="setup">
       <div id="formContainer">
         <div class="create-section">
+          <label for="playerPhoto" class="photo-label">Foto de Perfil:</label>
+          <input
+            id="playerPhoto"
+            class="input-large"
+            type="file"
+            accept="image/*"
+          />
+          <img
+            id="previewPhoto"
+            class="preview-photo hidden"
+            alt="Preview foto"
+          />
           <input
             id="playerName"
             class="input-large"
@@ -52,6 +64,20 @@
         <div class="separator">OU</div>
 
         <div class="join-section">
+          <label for="playerPhotoJoin" class="photo-label"
+            >Foto de Perfil:</label
+          >
+          <input
+            id="playerPhotoJoin"
+            class="input-large"
+            type="file"
+            accept="image/*"
+          />
+          <img
+            id="previewPhotoJoin"
+            class="preview-photo hidden"
+            alt="Preview foto"
+          />
           <input
             id="playerNameJoin"
             class="input-large"

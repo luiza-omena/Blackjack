@@ -428,3 +428,41 @@ button:disabled {
     opacity: 0.7;
   }
 }
+
+.photo-label {
+  display: block;
+  margin: 0.5rem auto 0.2rem;
+  font-size: 0.8rem;
+  color: var(--text-color);
+}
+.input-large[type="file"] {
+  padding: 0.6rem;
+  margin: 0.2rem 0 0.8rem;
+  width: 300px;
+  background: var(--input-bg);
+  color: var(--text-color);
+  border: 2px dashed var(--input-border);
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.preview-photo {
+  display: block;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0.5rem auto;
+  border: 2px solid var(--border-color);
+}
+
+.profile-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 0.3rem;
+  border: 1px solid var(--highlight);
+}
